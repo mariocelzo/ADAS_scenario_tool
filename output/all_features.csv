@@ -1,0 +1,8 @@
+scenario_name,name,category,maxSpeed,maxAcceleration,maxDeceleration,color,initial_position,cloudState,sun_intensity,sun_azimuth,sun_elevation,fog_visual_range,precipitation_type,precipitation_intensity,source
+Slalom,vehicle.nissan.micra,car,69.444,200,10.0,,,free,0.35,0,1.31,100000.0,rain,0.2,CARLA
+LaneChangeSimple,vehicle.tesla.model3,car,69.444,200,10.0,,,,,,,,,,CARLA
+LaneChangeSimple,vehicle.lincoln.mkz_2017,car,69.444,200,10.0,,,,,,,,,,CARLA
+LaneChangeSimple,vehicle.volkswagen.t2,car,69.444,200,10.0,,,free,0.85,0,1.31,100000.0,dry,0.0,CARLA
+ChangingWeather,vehicle.lincoln.mkz_2017,car,69.444,200,10.0,"0,0,255",,free,0.05,0,1.31,100000.0,rain,0.9,CARLA
+FollowLeadingVehicle,vehicle.lincoln.mkz_2017,car,69.444,200,10.0,"0,0,255",,,,,,,,,CARLA
+FollowLeadingVehicle,vehicle.tesla.model3,car,69.444,200,10.0,"255,0,0",,free,0.85,0,1.31,100000.0,dry,0.0,CARLA
