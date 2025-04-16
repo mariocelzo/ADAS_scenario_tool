@@ -1,4 +1,5 @@
 import os
+import json
 from parsers.parser_carla import parse_carla_scenario
 from parsers.parser_beamng import parse_beamng_scenario
 import pandas as pd
@@ -103,6 +104,29 @@ def extract_all_features(carla_dir, beamng_dir, output_dir):
             df = pd.DataFrame(features)
             df["source"] = "CARLA"
             carla_dfs.append(df)
+
+            # Esempi fittizi: in futuro sostituire con dati reali ottenuti da simulazione
+            execution_time = 10.0  # in secondi
+            criticality_score = 0.7  # tra 0 e 1
+            diversity_vector = df.iloc[0].to_dict()  # oppure un array di feature rilevanti
+
+            json_data = {
+                "scenario": file,
+                "execution_time": execution_time,
+                "criticality": criticality_score,
+                "diversity": diversity_vector
+            }
+
+            # Salvataggio dei singoli JSON
+            base_filename = os.path.splitext(file)[0]
+            with open(os.path.join(output_dir, f"{base_filename}_execution.json"), "w") as f:
+                json.dump({"execution_time": execution_time}, f, indent=2)
+
+            with open(os.path.join(output_dir, f"{base_filename}_criticality.json"), "w") as f:
+                json.dump({"criticality": criticality_score}, f, indent=2)
+
+            with open(os.path.join(output_dir, f"{base_filename}_diversity.json"), "w") as f:
+                json.dump({"diversity": diversity_vector}, f, indent=2)
 
     # Parsing BeamNG .json
     for file in os.listdir(beamng_dir):
