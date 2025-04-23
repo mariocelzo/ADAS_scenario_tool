@@ -5,11 +5,32 @@ def parse_beamng_scenario(file_path):
     with open(file_path, "r") as f:
         data = json.load(f)
 
-    scenario_data = {
-        "scenario_name": data.get("name", file_path.split("/")[-1]),
-        "num_vehicles": len(data.get("vehicles", {})),
-        "map": data.get("map", "unknown"),
-        "description": data.get("description", "none"),
-    }
+    rows = []
 
-    return pd.DataFrame([scenario_data])
+    # Estrai i veicoli
+    for v in data.get("vehicles", []):
+        v["type"] = "vehicle"
+        v["scenario_name"] = data.get("name", file_path.split("/")[-1].replace(".json", ""))
+        rows.append(v)
+
+    # Estrai dati meteo
+    if "weather_script" in data:
+        weather = data["weather_script"]
+        weather["type"] = "weather"
+        weather["scenario_name"] = data.get("name", file_path.split("/")[-1].replace(".json", ""))
+        rows.append(weather)
+
+    # Estrai regole di traffico
+    if "traffic_script" in data:
+        traffic = data["traffic_script"]
+        traffic["type"] = "traffic"
+        traffic["scenario_name"] = data.get("name", file_path.split("/")[-1].replace(".json", ""))
+        rows.append(traffic)
+
+    # Estrai waypoints
+    for w in data.get("waypoints", []):
+        w["type"] = "waypoint"
+        w["scenario_name"] = data.get("name", file_path.split("/")[-1].replace(".json", ""))
+        rows.append(w)
+
+    return pd.DataFrame(rows)

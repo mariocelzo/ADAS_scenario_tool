@@ -15,7 +15,41 @@ def extract_carla_features(xosc_file):
     from features.extractor import OpenScenarioExtractor
     full_extractor = OpenScenarioExtractor(xosc_file)
     header_and_storyboard = full_extractor.extract()
-    features.append({"file_header_and_storyboard": header_and_storyboard})
+    # Separa header, entities e storyboard
+    header = header_and_storyboard.get("File Header", {})
+    entities = header_and_storyboard.get("Entities", {})
+    storyboard = header_and_storyboard.get("Storyboard", {})
+
+    features.append({"type": "file_header", **header})
+
+    for name, entity in entities.items():
+        entity_flat = {"type": "entity", "entity_name": name}
+        for key, value in entity.items():
+            if isinstance(value, dict):
+                for subkey, subvalue in value.items():
+                    if isinstance(subvalue, dict):
+                        for subsubkey, subsubvalue in subvalue.items():
+                            entity_flat[f"{key}_{subkey}_{subsubkey}"] = subsubvalue
+                    else:
+                        entity_flat[f"{key}_{subkey}"] = subvalue
+            else:
+                entity_flat[key] = value
+        features.append(entity_flat)
+
+    for act_name, maneuvers in storyboard.items():
+        for maneuver in maneuvers:
+            sb_entry = {"type": "storyboard", "act": act_name, "maneuver": maneuver.get("Maneuver Name")}
+            for event in maneuver.get("Events", []):
+                sb_event = sb_entry.copy()
+                sb_event["event"] = event.get("Event Name")
+                for action in event.get("Actions", []):
+                    for k, v in action.items():
+                        if isinstance(v, dict):
+                            for subk, subv in v.items():
+                                sb_event[f"{k}_{subk}"] = subv
+                        else:
+                            sb_event[k] = v
+                    features.append(sb_event)
 
     scenario_name = os.path.basename(xosc_file).replace(".xosc", "")  # Estrai il nome del file senza estensione
 
@@ -107,9 +141,12 @@ def extract_all_features(carla_dir, beamng_dir, output_dir):
         if file.endswith(".xosc"):
             path = os.path.join(carla_dir, file)
             features = extract_carla_features(path)
+            if not features:
+                print(f"⚠️  Nessuna caratteristica estratta da {path}")
+                continue
             # Separa il contenuto avanzato (header e storyboard) per salvataggi JSON
-            extra_data = [f for f in features if "file_header_and_storyboard" in f]
-            features = [f for f in features if "file_header_and_storyboard" not in f]
+            extra_data = [f for f in features if f.get("type") == "file_header"]
+            #features = [f for f in features if f.get("type") != "file_header"]
 
             df = pd.DataFrame(features)
             df["source"] = "CARLA"
@@ -141,7 +178,7 @@ def extract_all_features(carla_dir, beamng_dir, output_dir):
             # Salvataggio di header e storyboard completi
             if extra_data:
                 with open(os.path.join(output_dir, f"{base_filename}_full_metadata.json"), "w") as f:
-                    json.dump(extra_data[0]["file_header_and_storyboard"], f, indent=2)
+                    json.dump(extra_data[0], f, indent=2)
 
     # Parsing BeamNG .json
     for file in os.listdir(beamng_dir):
