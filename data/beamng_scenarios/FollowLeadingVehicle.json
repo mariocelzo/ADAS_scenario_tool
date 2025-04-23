@@ -1,0 +1,77 @@
+{
+  "header": {
+    "revMajor": "1",
+    "revMinor": "0",
+    "date": "2020-03-20T12:00:00",
+    "description": "CARLA:FollowLeadingVehicle"
+  },
+  "entities": [
+    {
+      "name": "hero",
+      "catalogReference": null,
+      "parameters": []
+    },
+    {
+      "name": "adversary",
+      "catalogReference": null,
+      "parameters": []
+    }
+  ],
+  "storyboard": [],
+  "weather_script": {
+    "cloud_state": "free",
+    "sun_intensity": "0.85",
+    "fog": "100000.0",
+    "precipitation": "0.0"
+  },
+  "waypoints": [],
+  "vehicles_count": 2,
+  "pedestrians_count": 0,
+  "traffic_lights_count": 0,
+  "has_weather": true,
+  "time_of_day": "2020-03-20T12:00:00",
+  "maneuvers_count": 1,
+  "acts_count": 1,
+  "vehicles": [
+    {
+      "type": "file_header",
+      "scenario_name": "FollowLeadingVehicle",
+      "name": "vehicle.lincoln.mkz_2017",
+      "category": "car",
+      "maxSpeed": "69.444",
+      "maxAcceleration": "200",
+      "maxDeceleration": "10.0",
+      "color": "0,0,255",
+      "initial_position": null,
+      "cloudState": "free",
+      "sun_intensity": "0.85",
+      "sun_azimuth": "0",
+      "sun_elevation": "1.31",
+      "fog_visual_range": "100000.0",
+      "precipitation_type": "dry",
+      "precipitation_intensity": "0.0",
+      "source": "CARLA",
+      "location": null
+    },
+    {
+      "type": "file_header",
+      "scenario_name": "FollowLeadingVehicle",
+      "name": "vehicle.tesla.model3",
+      "category": "car",
+      "maxSpeed": "69.444",
+      "maxAcceleration": "200",
+      "maxDeceleration": "10.0",
+      "color": "255,0,0",
+      "initial_position": null,
+      "cloudState": "free",
+      "sun_intensity": "0.85",
+      "sun_azimuth": "0",
+      "sun_elevation": "1.31",
+      "fog_visual_range": "100000.0",
+      "precipitation_type": "dry",
+      "precipitation_intensity": "0.0",
+      "source": "CARLA",
+      "location": null
+    }
+  ]
+}

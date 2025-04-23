@@ -1,0 +1,77 @@
+{
+  "header": {
+    "revMajor": "1",
+    "revMinor": "0",
+    "date": "2020-07-30T12:00:00",
+    "description": "CARLA:Slalom"
+  },
+  "entities": [
+    {
+      "name": "hero",
+      "catalogReference": null,
+      "parameters": []
+    },
+    {
+      "name": "c1",
+      "catalogReference": null,
+      "parameters": []
+    },
+    {
+      "name": "c2",
+      "catalogReference": null,
+      "parameters": []
+    },
+    {
+      "name": "c3",
+      "catalogReference": null,
+      "parameters": []
+    },
+    {
+      "name": "c4",
+      "catalogReference": null,
+      "parameters": []
+    },
+    {
+      "name": "c5",
+      "catalogReference": null,
+      "parameters": []
+    }
+  ],
+  "storyboard": [],
+  "weather_script": {
+    "cloud_state": "free",
+    "sun_intensity": "0.35",
+    "fog": "100000.0",
+    "precipitation": "0.2"
+  },
+  "waypoints": [],
+  "vehicles_count": 1,
+  "pedestrians_count": 0,
+  "traffic_lights_count": 0,
+  "has_weather": true,
+  "time_of_day": "2019-06-25T12:00:00",
+  "maneuvers_count": 0,
+  "acts_count": 1,
+  "vehicles": [
+    {
+      "type": "file_header",
+      "scenario_name": "Slalom",
+      "name": "vehicle.nissan.micra",
+      "category": "car",
+      "maxSpeed": "69.444",
+      "maxAcceleration": "200",
+      "maxDeceleration": "10.0",
+      "color": null,
+      "initial_position": null,
+      "cloudState": "free",
+      "sun_intensity": "0.35",
+      "sun_azimuth": "0",
+      "sun_elevation": "1.31",
+      "fog_visual_range": "100000.0",
+      "precipitation_type": "rain",
+      "precipitation_intensity": "0.2",
+      "source": "CARLA",
+      "location": null
+    }
+  ]
+}

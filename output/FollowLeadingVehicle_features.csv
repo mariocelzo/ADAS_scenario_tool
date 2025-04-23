@@ -1,0 +1,4 @@
+scenario_name,name,category,maxSpeed,maxAcceleration,maxDeceleration,color,initial_position
+FollowLeadingVehicle,vehicle.lincoln.mkz_2017,car,69.444,200,10.0,"0,0,255",
+FollowLeadingVehicle,vehicle.tesla.model3,car,69.444,200,10.0,"255,0,0",
+FollowLeadingVehicle,,,,,,,

@@ -1,0 +1,5 @@
+scenario_name,name,category,maxSpeed,maxAcceleration,maxDeceleration,color,initial_position
+LaneChangeSimple,vehicle.tesla.model3,car,69.444,200,10.0,,
+LaneChangeSimple,vehicle.lincoln.mkz_2017,car,69.444,200,10.0,,
+LaneChangeSimple,vehicle.volkswagen.t2,car,69.444,200,10.0,,
+LaneChangeSimple,,,,,,,

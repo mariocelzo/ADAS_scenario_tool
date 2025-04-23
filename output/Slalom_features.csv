@@ -1,0 +1,3 @@
+scenario_name,name,category,maxSpeed,maxAcceleration,maxDeceleration,color,initial_position
+Slalom,vehicle.nissan.micra,car,69.444,200,10.0,,
+Slalom,,,,,,,

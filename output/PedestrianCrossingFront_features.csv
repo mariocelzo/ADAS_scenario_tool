@@ -1,0 +1,4 @@
+scenario_name,name,category,maxSpeed,maxAcceleration,maxDeceleration,color,initial_position
+PedestrianCrossingFront,vehicle.volkswagen.t2,car,69.444,200,10.0,,
+PedestrianCrossingFront,walker.pedestrian.0001,,,,,,
+PedestrianCrossingFront,,,,,,,
