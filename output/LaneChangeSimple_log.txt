@@ -1,0 +1,3 @@
+Scenario completato: LaneChangeSimple.xosc
+Tempo di esecuzione: 0.34s
+Criticita: 0.0

@@ -1,0 +1,14 @@
+FROM python:3.8-slim
+
+# Installa dipendenze di base (aggiunto libgeos-dev)
+RUN apt-get update && apt-get install -y wget unzip libgeos-dev && rm -rf /var/lib/apt/lists/*
+
+# Crea cartella di lavoro e copia tutto
+WORKDIR /app
+COPY . /app
+
+# Installa dipendenze Python
+RUN pip install --upgrade pip && pip install -r scenario_runner/requirements.txt
+
+# Punto di ingresso: lo script bash
+ENTRYPOINT ["bash", "run_scenario.sh"]

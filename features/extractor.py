@@ -3,10 +3,15 @@ from parsers.parser_carla import parse_carla_scenario
 from parsers.parser_beamng import parse_beamng_scenario
 import pandas as pd
 from lxml import etree
+import xml.etree.ElementTree as ET
 
 
 def extract_carla_features(xosc_file):
     tree = etree.parse(xosc_file)
+    from extractor import OpenScenarioExtractor
+    full_extractor = OpenScenarioExtractor(xosc_file)
+    header_and_storyboard = full_extractor.extract()
+
     root = tree.getroot()
 
     features = []
@@ -88,4 +93,90 @@ def extract_carla_features(xosc_file):
             }
             features[-1].update(weather_data)
 
+    features.append({"file_header_and_storyboard": header_and_storyboard})
+
     return features
+
+class OpenScenarioExtractor:
+    def __init__(self, filename):
+        self.filename = filename
+        self.tree = ET.parse(filename)
+        self.root = self.tree.getroot()
+
+    def extract(self):
+        header = self.extract_header()
+        entities = self.extract_entities()
+        storyboard = self.extract_storyboard()
+        return {
+            "header": header,
+            "entities": entities,
+            "storyboard": storyboard
+        }
+
+    def extract_header(self):
+        header = {}
+        header_element = self.root.find('FileHeader')
+        if header_element is not None:
+            header['revMajor'] = header_element.get('revMajor')
+            header['revMinor'] = header_element.get('revMinor')
+            header['date'] = header_element.get('date')
+            header['description'] = header_element.get('description')
+        return header
+
+    def extract_entities(self):
+        entities = []
+        entities_element = self.root.find('Entities')
+        if entities_element is not None:
+            for entity in entities_element.findall('ScenarioObject'):
+                entity_data = {
+                    'name': entity.get('name'),
+                    'catalogReference': entity.find('CatalogReference').get('catalogName') if entity.find('CatalogReference') is not None else None,
+                    'parameters': []
+                }
+                for param in entity.findall('ParameterDeclarations/ParameterDeclaration'):
+                    param_data = {
+                        'name': param.get('name'),
+                        'type': param.get('type'),
+                        'value': param.get('value')
+                    }
+                    entity_data['parameters'].append(param_data)
+                entities.append(entity_data)
+        return entities
+
+    def extract_storyboard(self):
+        storyboard = []
+        storyboard_element = self.root.find('Storyboard')
+        if storyboard_element is not None:
+            for act in storyboard_element.findall('Act'):
+                act_data = {
+                    'name': act.get('name'),
+                    'maneuvers': []
+                }
+                for maneuver_group in act.findall('ManeuverGroup'):
+                    mg_data = {
+                        'entityRef': maneuver_group.get('entityRef'),
+                        'maneuvers': []
+                    }
+                    for maneuver in maneuver_group.findall('Maneuver'):
+                        m_data = {
+                            'name': maneuver.get('name'),
+                            'events': []
+                        }
+                        for event in maneuver.findall('Event'):
+                            e_data = {
+                                'name': event.get('name'),
+                                'actions': []
+                            }
+                            for action in event.findall('Action'):
+                                a_data = {
+                                    'type': action.tag,
+                                    'parameters': {}
+                                }
+                                for param in action:
+                                    a_data['parameters'][param.tag] = param.text
+                                e_data['actions'].append(a_data)
+                            m_data['events'].append(e_data)
+                        mg_data['maneuvers'].append(m_data)
+                    act_data['maneuvers'].append(mg_data)
+                storyboard.append(act_data)
+        return storyboard

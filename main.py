@@ -11,6 +11,12 @@ def extract_carla_features(xosc_file):
     root = tree.getroot()
 
     features = []
+
+    from features.extractor import OpenScenarioExtractor
+    full_extractor = OpenScenarioExtractor(xosc_file)
+    header_and_storyboard = full_extractor.extract()
+    features.append({"file_header_and_storyboard": header_and_storyboard})
+
     scenario_name = os.path.basename(xosc_file).replace(".xosc", "")  # Estrai il nome del file senza estensione
 
     # Estrai i veicoli e le loro proprietà
@@ -101,6 +107,10 @@ def extract_all_features(carla_dir, beamng_dir, output_dir):
         if file.endswith(".xosc"):
             path = os.path.join(carla_dir, file)
             features = extract_carla_features(path)
+            # Separa il contenuto avanzato (header e storyboard) per salvataggi JSON
+            extra_data = [f for f in features if "file_header_and_storyboard" in f]
+            features = [f for f in features if "file_header_and_storyboard" not in f]
+
             df = pd.DataFrame(features)
             df["source"] = "CARLA"
             carla_dfs.append(df)
@@ -127,6 +137,11 @@ def extract_all_features(carla_dir, beamng_dir, output_dir):
 
             with open(os.path.join(output_dir, f"{base_filename}_diversity.json"), "w") as f:
                 json.dump({"diversity": diversity_vector}, f, indent=2)
+
+            # Salvataggio di header e storyboard completi
+            if extra_data:
+                with open(os.path.join(output_dir, f"{base_filename}_full_metadata.json"), "w") as f:
+                    json.dump(extra_data[0]["file_header_and_storyboard"], f, indent=2)
 
     # Parsing BeamNG .json
     for file in os.listdir(beamng_dir):

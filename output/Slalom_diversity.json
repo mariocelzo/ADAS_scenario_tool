@@ -1,0 +1,20 @@
+{
+  "diversity": {
+    "scenario_name": "Slalom",
+    "name": "vehicle.nissan.micra",
+    "category": "car",
+    "maxSpeed": "69.444",
+    "maxAcceleration": "200",
+    "maxDeceleration": "10.0",
+    "color": null,
+    "initial_position": null,
+    "cloudState": "free",
+    "sun_intensity": "0.35",
+    "sun_azimuth": "0",
+    "sun_elevation": "1.31",
+    "fog_visual_range": "100000.0",
+    "precipitation_type": "rain",
+    "precipitation_intensity": "0.2",
+    "source": "CARLA"
+  }
+}

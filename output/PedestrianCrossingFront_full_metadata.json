@@ -1,0 +1,21 @@
+{
+  "header": {
+    "revMajor": "1",
+    "revMinor": "0",
+    "date": "2020-03-24T12:00:00",
+    "description": "CARLA:PedestrianCrossing"
+  },
+  "entities": [
+    {
+      "name": "hero",
+      "catalogReference": null,
+      "parameters": []
+    },
+    {
+      "name": "adversary",
+      "catalogReference": null,
+      "parameters": []
+    }
+  ],
+  "storyboard": []
+}

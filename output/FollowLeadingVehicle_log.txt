@@ -1,0 +1,3 @@
+Scenario completato: FollowLeadingVehicle.xosc
+Tempo di esecuzione: 0.33s
+Criticita: 0.0

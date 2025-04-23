@@ -1,0 +1,8 @@
+{
+  "Slalom.xosc": 0.36,
+  "VehicleLateralDistance.xosc": 0.34,
+  "PedestrianCrossingFront.xosc": 0.33,
+  "LaneChangeSimple.xosc": 0.34,
+  "ChangingWeather.xosc": 0.33,
+  "FollowLeadingVehicle.xosc": 0.33
+}

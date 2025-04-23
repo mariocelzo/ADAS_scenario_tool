@@ -1,0 +1,3 @@
+Scenario completato: Slalom.xosc
+Tempo di esecuzione: 0.36s
+Criticita: 0.0
