@@ -19,8 +19,9 @@ Grazie a queste caratteristiche, ADAS Tool rappresenta un passo avanti nell'auto
 
 1️⃣ Clonazione del repository
 
-git clone https://github.com/tuo-username/adas-tool.git
-cd adas-tool
+
+	git clone https://github.com/mariocelzo/adas_scenario_tool.git
+
 
 2️⃣ Creazione dell’ambiente virtuale
 
@@ -37,14 +38,17 @@ Per Windows:
 
 All’interno dell’ambiente virtuale, eseguire:
 
-pip install --upgrade pip
-pip install -r requirements.txt
+
+	pip install --upgrade pip
+
+	pip install -r requirements.txt
 
 4️⃣ Docker (per CARLA) Passaggio da eseguire solo se si utilizza MacOS, se si è su macchine Windows passare allo step 5.
 
 Per eseguire CARLA in un ambiente Docker:
 
-docker run -p 2000-2002:2000-2002 --gpus all --rm -it carlasim/carla:0.9.14
+
+	docker run -p 2000-2002:2000-2002 --gpus all --rm -it carlasim/carla:0.9.14
 
 Assicurarsi di avere Docker correttamente installato e configurato.
 
@@ -52,8 +56,10 @@ Assicurarsi di avere Docker correttamente installato e configurato.
 
 ScenarioRunner è richiesto per il lancio degli scenari:
 
-git clone --branch 0.9.14 https://github.com/carla-simulator/scenario_runner.git
-pip install -r scenario_runner/requirements.txt
+
+	git clone --branch 0.9.14 https://github.com/carla-simulator/scenario_runner.git
+
+	pip install -r scenario_runner/requirements.txt
 
 
 ⸻
@@ -62,60 +68,41 @@ pip install -r scenario_runner/requirements.txt
 
 ✅ 1. Avviare CARLA (anche in questo caso nel caso di windows passare al secondo passaggio)
 
-docker run -p 2000-2002:2000-2002 --gpus all --rm -it carlasim/carla:0.9.14
+
+	docker run -p 2000-2002:2000-2002 --gpus all --rm -it carlasim/carla:0.9.14
 
 ✅ 2. Eseguire gli script di test
 
 Lanciare lo script principale per eseguire e loggare gli scenari:
 
-python3 run_and_log_scenarios.py
+
+	python3 run_and_log_scenarios.py
 
 I risultati saranno salvati nella cartella output/.
 
-⸻
-
-📂 Struttura del progetto
-
-├── data
-│   ├── carla_scenarios
-│   └── beamng_scenarios
-├── output
-│   ├── features
-│   ├── logs
-│   ├── execution_time.json
-│   ├── criticality_score.json
-│   └── diversity_score.json
-├── parsers
-│   ├── parser_carla.py
-│   ├── parser_beamng.py
-│   └── carla_to_beamng.py
-├── requirements.txt
-├── run_and_log_scenarios.py
-├── scenario_runner
-└── README.md
 
 
-⸻
+
 
 🛠️ Manutenzione
 	•	Per aggiornare le dipendenze:
 
 pip install --upgrade -r requirements.txt
 
-
-	•	Per aggiornare Docker:
-
-docker pull carlasim/carla:0.9.14
+Per aggiornare Docker:
 
 
+	docker pull carlasim/carla:0.9.14
 
-⸻
+
+
+
+
 
 🤝 Contributi
 
 Contributi e miglioramenti sono ben accetti! Sentiti libero di fare una Pull Request o di aprire una Issue per discutere nuove funzionalità.
 
-⸻
 
 📝 Licenza
 
