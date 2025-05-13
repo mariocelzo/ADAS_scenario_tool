@@ -40,9 +40,22 @@
   "storyboard": [],
   "weather_script": {
     "cloud_state": "free",
-    "sun_intensity": "0.35",
-    "fog": "100000.0",
-    "precipitation": "0.2"
+    "sun": {
+      "intensity": "0.35",
+      "azimuth": "0",
+      "elevation": "1.31"
+    },
+    "fog": {
+      "visual_range": "100000.0",
+      "density": ""
+    },
+    "precipitation": {
+      "type": "rain",
+      "intensity": "0.2"
+    },
+    "wind_speed": "",
+    "ambient_temperature": "",
+    "road_wetness": ""
   },
   "waypoints": [],
   "vehicles_count": 1,
@@ -71,7 +84,18 @@
       "precipitation_type": "rain",
       "precipitation_intensity": "0.2",
       "source": "CARLA",
-      "location": null
+      "location": null,
+      "license_plate": "",
+      "driver_state": "",
+      "engine_parameters": {
+        "max_torque": "",
+        "max_power": ""
+      },
+      "sensor_configuration": ""
     }
-  ]
+  ],
+  "pedestrians": [],
+  "traffic_lights": [],
+  "lanes": [],
+  "triggers": []
 }

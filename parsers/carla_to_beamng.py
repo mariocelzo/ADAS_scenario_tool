@@ -13,9 +13,22 @@ def convert_carla_to_beamng(xosc_file, output_dir):
     # Aggiunta dati extra ispirati da script LUA/BeamNG
     scenario_data["weather_script"] = {
         "cloud_state": tree.xpath("string(//Weather/@cloudState)"),
-        "sun_intensity": tree.xpath("string(//Sun/@intensity)"),
-        "fog": tree.xpath("string(//Fog/@visualRange)"),
-        "precipitation": tree.xpath("string(//Precipitation/@intensity)")
+        "sun": {
+            "intensity": tree.xpath("string(//Sun/@intensity)"),
+            "azimuth": tree.xpath("string(//Sun/@azimuth)"),
+            "elevation": tree.xpath("string(//Sun/@elevation)")
+        },
+        "fog": {
+            "visual_range": tree.xpath("string(//Fog/@visualRange)"),
+            "density": tree.xpath("string(//Fog/@density)")
+        },
+        "precipitation": {
+            "type": tree.xpath("string(//Precipitation/@precipitationType)"),
+            "intensity": tree.xpath("string(//Precipitation/@intensity)")
+        },
+        "wind_speed": tree.xpath("string(//Wind/@speed)"),
+        "ambient_temperature": tree.xpath("string(//Weather/@temperature)"),
+        "road_wetness": tree.xpath("string(//Weather/@roadWetness)")
     }
 
     traffic_rule = tree.xpath("//TrafficSignalController")
@@ -59,7 +72,14 @@ def convert_carla_to_beamng(xosc_file, output_dir):
             "precipitation_type": tree.xpath("string(//Precipitation/@precipitationType)"),
             "precipitation_intensity": tree.xpath("string(//Precipitation/@intensity)"),
             "source": "CARLA",
-            "location": None
+            "location": None,
+            "license_plate": vehicle.xpath("string(Properties/Property[@name='license_plate']/@value)"),
+            "driver_state": vehicle.xpath("string(Properties/Property[@name='driver_state']/@value)"),
+            "engine_parameters": {
+                "max_torque": vehicle.xpath("string(Performance/@maxTorque)"),
+                "max_power": vehicle.xpath("string(Performance/@maxPower)")
+            },
+            "sensor_configuration": vehicle.xpath("string(Properties/Property[@name='sensor_configuration']/@value)")
         }
         # Colore (opzionale)
         color_prop = vehicle.xpath("Properties/Property[@name='color']/@value")
@@ -72,6 +92,67 @@ def convert_carla_to_beamng(xosc_file, output_dir):
             vehicle_data["initial_position"] = pos_s[0]
 
         scenario_data["vehicles"].append(vehicle_data)
+
+    # Estrazione completa dei pedoni
+    scenario_data["pedestrians"] = []
+    for pedestrian in tree.xpath("//Pedestrian"):
+        pedestrian_data = {
+            "name": pedestrian.get("name"),
+            "model": pedestrian.get("model"),
+            "initial_position": {
+                "x": pedestrian.xpath("string(ObjectController/Position/WorldPosition/@x)"),
+                "y": pedestrian.xpath("string(ObjectController/Position/WorldPosition/@y)"),
+                "z": pedestrian.xpath("string(ObjectController/Position/WorldPosition/@z)")
+            },
+            "behavior_model": pedestrian.xpath("string(Properties/Property[@name='behavior_model']/@value)"),
+            "waypoints": [
+                {
+                    "x": w.xpath("string(@x)"),
+                    "y": w.xpath("string(@y)"),
+                    "z": w.xpath("string(@z)")
+                }
+                for w in pedestrian.xpath("Waypoints/Waypoint")
+            ]
+        }
+        scenario_data["pedestrians"].append(pedestrian_data)
+
+    # Semafori avanzati
+    scenario_data["traffic_lights"] = []
+    for light in tree.xpath("//TrafficLight"):
+        light_data = {
+            "id": light.get("id"),
+            "state": light.xpath("string(@state)"),
+            "cycle_time": light.xpath("string(@cycleTime)"),
+            "location": {
+                "x": light.xpath("string(Position/@x)"),
+                "y": light.xpath("string(Position/@y)"),
+                "z": light.xpath("string(Position/@z)")
+            },
+            "states": [state.get("name") for state in light.xpath("Phases/Phase")]
+        }
+        scenario_data["traffic_lights"].append(light_data)
+
+    # Dettagli sulle corsie e sui percorsi
+    scenario_data["lanes"] = []
+    for lane in tree.xpath("//Lane"):
+        lane_data = {
+            "id": lane.get("id"),
+            "width": lane.xpath("string(@width)"),
+            "type": lane.xpath("string(@type)"),
+            "speed_limit": lane.xpath("string(@speedLimit)")
+        }
+        scenario_data["lanes"].append(lane_data)
+
+    # Trigger ed eventi avanzati
+    scenario_data["triggers"] = []
+    for trigger in tree.xpath("//Trigger"):
+        trigger_data = {
+            "name": trigger.get("name"),
+            "condition": trigger.xpath("string(ConditionGroup/Condition/@conditionEdge)"),
+            "entity_ref": trigger.xpath("string(EntityCondition/@entityRef)"),
+            "trigger_time": trigger.xpath("string(ConditionGroup/Condition/@delay)")
+        }
+        scenario_data["triggers"].append(trigger_data)
 
     # Nome del file senza estensione
     filename = os.path.splitext(os.path.basename(xosc_file))[0]
@@ -89,9 +170,9 @@ def convert_all_carla(carla_dir, beamng_output_dir):
             convert_carla_to_beamng(xosc_path, beamng_output_dir)
 
 if __name__ == "__main__":
-    # Percorsi predefiniti relativi al progetto
-    carla_dir = os.path.join("data", "carla_scenarios")
-    beamng_dir = os.path.join("data", "beamng_scenarios")
+    # Percorsi assoluti
+    carla_dir = "/Users/mariocelzo/Downloads/UNIVERSITA/TIROCINIO/ADAS_tool/data/carla_scenarios"
+    beamng_dir = "/Users/mariocelzo/Downloads/UNIVERSITA/TIROCINIO/ADAS_tool/data/beamng_scenarios"
 
     # Assicurati che la cartella di output esista
     os.makedirs(beamng_dir, exist_ok=True)
